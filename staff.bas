@@ -635,14 +635,22 @@ Public Sub Sort2DArray(ByRef arr() As String, ByVal SortColumn As Long, Optional
 End Sub
 
 
-Function chekIfWbIsOpened(filenae As String)
+Public Function chekIfWbIsOpened(wbName As String, Optional isActive As Boolean = False)
     On Error GoTo filenotopened
-    Set dummy = Workbooks(filenae)
+    Set dummy = Workbooks(wbName)
     chekIfWbIsOpened = True
+    If isActive And ActiveWorkbook.Name <> wbName Then
+         GoTo fileIsNotActive
+    End If
+        
+    End If
     GoTo exitFunction
 filenotopened:
-    MsgBox ("The file " & filenae & " is not opened!")
+    MsgBox ("The file " & wbName & " is not opened!")
     chekIfWbIsOpened = False
+    
+fileIsNotActive:
+
 exitFunction:
     On Error GoTo 0
 End Function

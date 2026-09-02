@@ -438,8 +438,11 @@ Dim date1 As String
 Dim wbTabel As Object
 Dim wsTabel As Object
 Set wbTabel = ActiveWorkbook
-If wbTabel.Name <> constTabelRebFileName Then
-    MsgBox "incorrect workbook : " & wbTabel.Name & ", must be the: " & constTabelRebFileName
+'If wbTabel.Name <> constTabelRebFileName Then
+'    MsgBox "incorrect workbook : " & wbTabel.Name & ", must be the: " & constTabelRebFileName
+'    Exit Function
+'End If
+If Not chekIfWbIsOpened(constTabelRebFileName) Then
     Exit Function
 End If
 Set wsTabel = ActiveSheet
