@@ -670,7 +670,6 @@ Sub exportMacro()
 repoDir = "C:\Users\SecundUser\OneDrive\Documents\vsu\persxls\"
 For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
     m.Export (repoDir & m.Name & ".bas")
+    Debug.Print m.Name
 Next
-'Set wbp = Workbooks("PERSONAL.xlsb").VBProject.VBComponents(1).Export()
-
 End Sub
