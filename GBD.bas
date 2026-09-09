@@ -1,23 +1,16 @@
 Attribute VB_Name = "GBD"
 
 'Dim chkRegEx As New RegExp
-Function checkEnv() As Boolean
+
+Sub gbdGenerate()
     wbName = "1 –œ”.xlsx"
-    checkEnv = True
     If ActiveWorkbook.Name <> wbName Then
         MsgBox "The activebook must be " & wbName
-        checkEnv = False
+        Exit Sub
     End If
     wsName = "ÀËÒÚ2"
     If ActiveSheet.Name <> wsName Then
         MsgBox "The activesheet must be " & wsName
-        checkEnv = False
-    End If
-End Function
-
-
-Sub gbdGenerate()
-    If Not checkEnv() Then
         Exit Sub
     End If
     Dim txt1 As String
@@ -45,7 +38,6 @@ Sub gbdGenerate()
     txt1 = txt1 & part8()                 ' 8. ¬“–¿“» —¬ŒØ’ ¬≤…—‹  “¿ œ–Œ“»¬Õ» ¿
     txt1 = txt1 & part9()                 ' 9. “–Œ‘≈Ø “¿ «¿’ŒœÀ≈Õ≤ œŒÀŒÕ≈Õ≤
     txt1 = txt1 & part10()                ' 10. ¬»—ÕŒ¬Œ  œ–Œ ÕŒ¬≤ —œŒ—Œ¡» ¡Œ…Œ¬»’ ƒ≤…
-    txt1 = txt1 & sign()
 
     Dim repDate As Date
     repDate = Cells(29, 1)
@@ -187,9 +179,6 @@ Function part10() As String
     part10 = "10. ÕÂ ‚Ëˇ‚ÎÂÌÓ" & vbCrLf
 End Function
 
-Function sign() As String
-    sign = " ÓÏ‡Ì‰Ë ÓÚË –≈¡ Í‡Ô≥Ú‡Ì               ÃËÍÓÎ‡ ’‡Ï‡„‡ÌÓ‚" & vbCrLf
-End Function
 
 Function writeTxtFileAndOpen(txt As String, repDate As Date)
 
@@ -205,103 +194,3 @@ Set oFile = Nothing
 retVal = Shell("notepad.exe " & strPath, vbNormalFocus)
 
 End Function
-
-Function getDate(shift As Integer) As Date
-    Debug.Assert checkEnv()
-    getDate = ActiveSheet.Cells(29, 1) + shift
-End Function
-
-Function getDateDataRow(d1 As Date) As Long
-    For i = 1 To 1000000
-        If ActiveWorkbook.Sheets("ÔÛ").Cells(i, 1) = d1 Then
-            getDateDataRow = i
-            Exit Function
-        End If
-    Next i
-End Function
-
-
-Sub copyGBDData_int(d1 As Date)
-    If Not checkEnv() Then
-        Exit Sub
-    End If
-    If Not chekIfWbIsOpened("¯Ú‡ÚÍ‡.xlsx") Then
-        Exit Sub
-    End If
-
-
-    ' 1. Store the user's current calculation setting
-    Dim originalCalculation As XlCalculation
-    originalCalculation = Application.Calculation
-
-    ' 2. Suppress recalculation (set to Manual)
-    Application.Calculation = xlCalculationManual
-    
-    ' Optional: Suppress screen flickering and background events for extra speed
-    Application.ScreenUpdating = False
-    Application.EnableEvents = False
-
-
-    r1 = getDateDataRow(d1)
-    Set wsSource = ActiveWorkbook.Sheets("ÔÛ")
-    Set wsTarget = ActiveSheet
-    For r = 0 To 9
-        rTarget = 29 + r
-        rSource = r1 + r
-        For c = 1 To 12
-            If wsTarget.Cells(rTarget, c) <> wsSource.Cells(rSource, c).Value Then
-                wsTarget.Cells(rTarget, c) = wsSource.Cells(rSource, c).Value
-                rColor = 28
-            Else
-                rColor = 26
-            End If
-            If c <> 1 Then
-                wsTarget.Cells(rTarget, c).Interior.Color = wsTarget.Cells(rColor, 1).Interior.Color
-            End If
-        Next c
-    Next
-    
-    copyBchs d1, "dataCurDate"
-    copyBchs d1 - 1, "dataPrevDate"
-    
-    
-    Application.Calculation = xlCalculationAutomatic   '  originalCalculation
-    Application.ScreenUpdating = True
-    Application.EnableEvents = True
-End Sub
-
-Sub copyBchs(d1 As Date, txtPos As String)
-    Dim dd As String
-    dd = Format(d1, "yymmdd")
-    sn = getLastHistSheetName(dd)
-    Set wsStaff = Workbooks("¯Ú‡ÚÍ‡.xlsx").Sheets(sn)
-    Set wsTarget = ActiveSheet
-    hash1 = RangeToMD5(wsStaff.Range("S132:S139"))
-    hash2 = RangeToMD5(wsStaff.Range("U132:U139"))
-    Debug.Assert hash1 = "790455133cb9dd7bfcff9eae1b77936d"
-    Debug.Assert hash2 = "63f11f011be33b6d99bf31fb63e41c3b"
-'    Dim vArray() As Variant
-'    Dim rrr As Range
-'    Set rrr = wsStaff.Range("S132:V136")
-'    vArray = rrr
-    If txtPos = "dataCurDate" Then
-        r1 = 13
-        r2 = 17
-        r3 = 18
-        r4 = 19
-    Else  '  "dataPrevDate"
-        r1 = 3
-        r2 = 7
-        r3 = 8
-        r4 = 9
-    End If
-    
-    Range(Cells(r1, 1), Cells(r2, 4)) = wsStaff.Range("S132:V136").Value
-    Range(Cells(r3, 1), Cells(r4, 4)) = wsStaff.Range("S138:V139").Value
-    
-End Sub
-
-Sub copyGBDData()
-    copyGBDData_int (getDate(1))
-End Sub
-

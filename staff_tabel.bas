@@ -82,7 +82,7 @@ Sub int_ActiveSheetCopyPasteValues(showMsg As Boolean)
     End If
     clearFilter ActiveSheet
     ActiveSheet.Cells.Select
-    Selection.copy
+    Selection.Copy
     Selection.PasteSpecial xlPasteValues
     ActiveSheet.Cells(1, 1).Select
     Application.CutCopyMode = False
@@ -124,7 +124,7 @@ End If
 
 Dim r2 As Long
 Dim r1 As Long
-r0 = ActiveCell.row
+r0 = ActiveCell.Row
 c1 = ActiveCell.Column
 rmax = 20
 r1 = r0
@@ -355,7 +355,7 @@ Set nws = nwb.ActiveSheet
 ws1.Activate
 ws1.Select
 clearFilter ws1
-ws1.Range("R1:S82").copy
+ws1.Range("R1:S82").Copy
 
 nws.Activate
 nws.Cells(1, 1).Value = ws1.Name
@@ -363,14 +363,14 @@ nws.Cells(row1, 1).Select
 Selection.PasteSpecial xlPasteValues
 
 ws1.Activate
-ws1.Range("AK1:AN82").copy
+ws1.Range("AK1:AN82").Copy
 
 nws.Activate
 nws.Cells(row1, 3).Select
 Selection.PasteSpecial xlPasteValues
 
 ws1.Activate
-ws1.Range("CA1:CD82").copy
+ws1.Range("CA1:CD82").Copy
 
 nws.Activate
 nws.Cells(row1, 7).Select
@@ -380,19 +380,19 @@ Selection.PasteSpecial xlPasteValues
 
 ws2.Activate
 clearFilter ws2
-ws2.Range("R1:S82").copy
+ws2.Range("R1:S82").Copy
 nws.Activate
 nws.Cells(1, 1 + intShift).Value = ws2.Name
 nws.Cells(row1, 1 + intShift).Select
 Selection.PasteSpecial xlPasteValues
 ws2.Activate
-ws2.Range("AK1:AN82").copy
+ws2.Range("AK1:AN82").Copy
 nws.Activate
 nws.Cells(row1, 3 + intShift).Select
 Selection.PasteSpecial xlPasteValues
 
 ws2.Activate
-ws2.Range("CA1:CD82").copy
+ws2.Range("CA1:CD82").Copy
 
 nws.Activate
 nws.Cells(row1, 7 + intShift).Select
@@ -439,12 +439,12 @@ Dim wbTabel As Object
 Dim wsTabel As Object
 Set wbTabel = ActiveWorkbook
 If wbTabel.Name <> constTabelRebFileName Then
-    MsgBox "incorrect workbook : " & wbTabel.Name & ", must be the: " & constTabelRebFileName
+    MsgBox "Відкривати макрос можно тільки з : " & constTabelRebFileName
     Exit Function
 End If
 Set wsTabel = ActiveSheet
 If ActiveSheet.Name <> "Табель" Then
-    MsgBox "incorrect sheet : " & ActiveSheet.Name
+    MsgBox "Аркуш повинен : " & ActiveSheet.Name
     Exit Function
 End If
 Dim wbStuff  As Object
@@ -484,7 +484,7 @@ For Each fee In Range("[PERSONAL.xlsb]Sheet1!A5:J5")
         chkWsColRes = 1 + colRepShift
         'wbTabel.Activate
         chkWs.Cells(1, chkWsColRes).Value = constTabelRebFileName & " " & date1
-        For r = 9 To 60
+        For r = 9 To 92
             If wsTabel.Cells(r, colDate).Value = fee Then
         '        fios = fios & Cells(r, colFio).Value
         '        Debug.Print Cells(r, colFio).Value
@@ -499,7 +499,7 @@ For Each fee In Range("[PERSONAL.xlsb]Sheet1!A5:J5")
         dataRange = sortCol1 & ":" & sortColChar & "100"
     
         sortData chkWs, sortCol1, dataRange
-        'chkWs.Cells(2, chkWsColRes).Value = "=PERSONAL.xlsb!RangeToMD5Short(" & dataRange & ")"
+        chkWs.Cells(2, chkWsColRes).Value = "=PERSONAL.xlsb!RangeToMD5Short(" & dataRange & ")"
         
         'данные из штатки
         chkWsColRes = 5 + colRepShift
@@ -518,7 +518,7 @@ For Each fee In Range("[PERSONAL.xlsb]Sheet1!A5:J5")
         sortCol1 = sortColChar & "3"
         dataRange = sortCol1 & ":" & sortColChar & "100"
         sortData chkWs, sortCol1, dataRange
-       ' chkWs.Cells(2, chkWsColRes).Value = "=PERSONAL.xlsb!RangeToMD5Short(" & dataRange & ")"
+        chkWs.Cells(2, chkWsColRes).Value = "=PERSONAL.xlsb!RangeToMD5Short(" & dataRange & ")"
         chkWs.Cells(1, 3 + colRepShift).Value = fee
         chkWs.Cells(2, 3 + colRepShift).Value = "=R2C" & 1 + colRepShift & "=R2C" & 5 + colRepShift
     
@@ -655,8 +655,8 @@ End If
 date1 = Selection.Cells(-5).Value
 date2 = Selection.Cells(1).Value
 Debug.Assert date2 - date1 = 1
-row1 = Selection.Cells(-5).row
-row2 = Selection.Cells(1).row
+row1 = Selection.Cells(-5).Row
+row2 = Selection.Cells(1).Row
 For c = 2 To 21
     For r = 0 To 5
         Debug.Print row1 + r & " x " & c & " ->> " & row2 + r & " x " & c
