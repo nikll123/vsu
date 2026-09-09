@@ -1,4 +1,6 @@
 Attribute VB_Name = "staff"
+' [$-uk-UA-x-genlower]Д ММММ ГГГГ "г."
+
 Public Const staffDataRange As String = "A1:BZ73"
 Public Const staffStatusDataRange As String = "AK2:AN73"
 Public Const hashDataCell As String = "B83"
@@ -19,10 +21,12 @@ Public Const constWsStaffNayav As String = "X118"
 Public Const constwb526path As String = "C:\RR\БЧС\5.26 БЧС\"
 Public Const constwb526fileName As String = "рРЕБ БЧС Форма 5.26 - .xlsx"
 Public Const constWsName526 = "БЧС"
-Public Const constStaffPath As String = "C:\Users\SecundUser\OneDrive\RR cloud\ШТАТКА\"
+'Public Const constStaffPath As String = "R:\ШТАТКА"
  
 Public Const constWsName518 = "xx омбр"
 Public Const constwb518fileName As String = "рРЕБ Ф5.18.xlsx"
+Const constRepoDir As String = "C:\Users\SecundUser\OneDrive\Documents\vsu\persxls\"
+
 
 Dim chkRegEx As New RegExp
 
@@ -101,7 +105,7 @@ If wsStaff Is Nothing Then Exit Sub
 If wsStaff.Cells(1, 1).Value = "" Then
     wsPersonalStaff.Activate
     Range(staffDataRange).Select
-    Selection.Copy
+    Selection.copy
     wsStaff.Activate
     Range("A1").Select
     wsStaff.Range("A1").PasteSpecial xlPasteValues
@@ -240,7 +244,7 @@ Function getStateFioRow(fio As String) As Long
     For Each c In wsState.Range(staffFioRange).Cells
         'Debug.Print c.Value
         If fio = c.Value Then
-            getStateFioRow = c.Row
+            getStateFioRow = c.row
             Exit For
         End If
     Next
@@ -309,6 +313,7 @@ End Sub
 Function int_createHistCopy(marker As String) As Worksheet
 Set wbStaff = int_getWbStaff()
 Set wsStaff = int_getWsStaff()
+
 Set a1 = wsStaff.Range(staffDateCell)
 Dim staffDate As String
 staffDate = a1.Value
@@ -316,16 +321,19 @@ If staffDate = "" Then
     MsgBox "дата данных не найдена " & staffDateCell
     Exit Function
 End If
-If marker = "" Then
-    If MsgBox("Создать архивную копию (" & staffDate & ")?", vbOKCancel, constStuffWbName) = vbCancel Then Exit Function
-Else
-    
-End If
-
 If Not testDate(staffDate) Then
     MsgBox "Error date!"
     Exit Function
 End If
+
+If marker = "" Then
+    If MsgBox("Создать архивную копию (" & staffDate & ")?", vbOKCancel, constStuffWbName) = vbCancel Then
+        Exit Function
+    End If
+End If
+
+
+
     
 If marker = "" Then
     lastHistPageName = getLastHistSheetName(staffDate)
@@ -359,10 +367,11 @@ Else
         End If
     End If
 End If
-wsStaff.Copy After:=wsStaff
+wsStaff.copy After:=wsStaff
 Set newWS = wbStaff.Worksheets(wsStaff.Index + 1)
 newWS.Name = nextHistPageName
 ActiveSheet.Cells(1, 19).FormatConditions.Delete ' удаление условного форматирования с заголовка ФИО
+ActiveSheet.Cells(1, 18).FormatConditions.Delete ' удаление условного форматирования с заголовка званием
 ActiveSheetCopyPasteValues ' замена формул значениями
 newWS.Range(staffDateTimeCell).Value = Now
     
@@ -398,7 +407,7 @@ Set wsPersonalStaff = wb.Worksheets(wsName)
 
 clearFilter wsStaff
 
-wsStaff.Range(staffStatusDataRange).Copy
+wsStaff.Range(staffStatusDataRange).copy
 wsPersonalStaff.Range(staffStatusDataRange).PasteSpecial xlPasteValues
 
 'int_createHistCopy ("r")
@@ -658,11 +667,14 @@ Public Function removeSubstring(s1 As String, s2 As String) As String
 End Function
 
 
+'Sub importMacro()
+'    for
+'End Sub
+
 Sub exportMacro()
-repoDir = "C:\Users\SecundUser\OneDrive\Documents\vsu\persxls\"
 For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
     If m.Type = 1 Then ' vbext_ct_StdModule
-        m.Export (repoDir & m.Name & ".bas")
+        m.Export (constRepoDir & m.Name & ".bas")
         'Debug.Print m.Name
     End If
 Next

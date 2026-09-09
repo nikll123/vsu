@@ -92,9 +92,9 @@ End Function
 
 
 ' выдает слово из строки по заданному номеру
-Public Function GetWordByIndex(text As String, i As Integer) As String
+Public Function GetWordByIndex(text As String, i As Integer, Optional sep As String = " ") As String
 text = strAllTrim(text)
-a = Split(" " + text, " ")
+a = Split(sep + text, sep)
 On Error Resume Next
 GetWordByIndex = a(i)
 On Error GoTo 0

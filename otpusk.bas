@@ -3,7 +3,7 @@ Const row1 = 2
 Const row2 = 50
 Const dateRow = 1
 Const col1 = 7
-Const col2 = 300
+Const col2 = 289
 Const colFio = 1
 Const colStatusPidr = 37
 
