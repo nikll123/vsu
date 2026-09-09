@@ -3,8 +3,7 @@ Public Const dateColShift = 3
 
 Enum repType
     egos          ' поиск первой строки  с датой r1
-    kotel         ' поиск последней строки с датой r2
-    monthStaffList
+    kotel      ' поиск последней строки  с датой r2
 End Enum
 
 Sub egosCreate()
@@ -13,10 +12,6 @@ End Sub
 
 Sub kotelCreate()
     repCreate repType.kotel
-End Sub
-
-Sub monthStuffList()
-    repCreate monthStaffList
 End Sub
 
 Sub repCreate(repType1 As repType)
@@ -66,24 +61,16 @@ Dim rowCur As Integer
 Dim curHistSheetName As String
 
 date1 = DateSerial(yearStuff, monthStuff, 1)
-date2 = DateAdd("m", 1, date1) - 1
+date2 = date1 + 32
+date2 = DateSerial(Year(date2), Month(date2), 1) - 1
 
-If repType1 <> monthStaffList Then
-    If repType1 = repType.egos Then
-        wsEgos.Cells(1, 1) = "≈∆ќ——"
-    ElseIf repType1 = repType.kotel Then
-        wsEgos.Cells(1, 1) = " ќ“≈Ћ"
-    ElseIf repType1 = repType.monthStaffList Then
-        wsEgos.Cells(1, 1) = "персонал за мес€ц"
-    Else
-        Debug.Assert False
-    End If
-    
-    For i = 0 To (date2 - date1)  ' даты в шапке отчета
-        wsEgos.Cells(1, i + dateColShift).Value = date1 + i
-    Next i
-Else
-End If
+
+
+
+
+For i = 0 To (date2 - date1)  ' даты в шапке отчета
+    wsEgos.Cells(1, i + dateColShift).Value = date1 + i
+Next i
 
 ' fios
 rLast = 1
@@ -96,15 +83,12 @@ For i = 0 To (date2 - date1)
         Set wsHist = wbStuff.Worksheets(csName)
         On Error GoTo 0
         If wsHist Is Nothing Then
-            'Debug.Print csName & " is not found"
-            MsgBox "Error" & csName & " is not found"
-
+            Debug.Print csName & " is not found"
             Exit Sub
         End If
         
         For r = 2 To 81
             fio = wsHist.Cells(r, 19).Value
-            inn = wsHist.Cells(r, 20).Value
             If fio <> "" Then
                 milTitle = wsHist.Cells(r, 18)
                 For j = 2 To rLast
@@ -116,18 +100,14 @@ For i = 0 To (date2 - date1)
                     rLast = rLast + 1
                     wsEgos.Cells(rLast, 1) = milTitle
                     wsEgos.Cells(rLast, 2) = fio
-                    If repType1 = monthStaffList Then
-                        wsEgos.Cells(rLast, 3) = inn
-                    End If
+                    
                 End If
             End If
         Next r
     End If
 Next i
 
-If repType1 = monthStaffList Then
-    Exit Sub
-End If
+
 
 rowCur = 1
 For i = 2 To 100

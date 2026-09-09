@@ -1,23 +1,16 @@
 Attribute VB_Name = "GBD"
 
 'Dim chkRegEx As New RegExp
-Function checkEnv() As Boolean
+
+Sub gbdGenerate()
     wbName = "1 пос.xlsx"
-    checkEnv = True
     If ActiveWorkbook.Name <> wbName Then
         MsgBox "The activebook must be " & wbName
-        checkEnv = False
+        Exit Sub
     End If
     wsName = "кХЯР2"
     If ActiveSheet.Name <> wsName Then
         MsgBox "The activesheet must be " & wsName
-        checkEnv = False
-    End If
-End Function
-
-
-Sub gbdGenerate()
-    If Not checkEnv() Then
         Exit Sub
     End If
     Dim txt1 As String
@@ -45,7 +38,6 @@ Sub gbdGenerate()
     txt1 = txt1 & part8()                 ' 8. брпюрх ябн╞у б╡ияэй рю опнрхбмхйю
     txt1 = txt1 & part9()                 ' 9. рпнте╞ рю гюунокем╡ онкнмем╡
     txt1 = txt1 & part10()                ' 10. бхямнбнй опн мнб╡ яонянах анинбху д╡и
-    txt1 = txt1 & sign()
 
     Dim repDate As Date
     repDate = Cells(29, 1)
@@ -195,6 +187,7 @@ Function sign() As String
     sign = "йНЛЮМДХП ПНРХ пеа ЙЮОЁРЮМ               лХЙНКЮ уЮЛЮЦЮМНБ"
 End Function
 
+
 Function writeTxtFileAndOpen(txt As String, repDate As Date)
 
 Dim fso As Object
@@ -316,3 +309,4 @@ End Sub
 Sub copyGBDDataBack()
     copyGBDData_int (getDate(-1))
 End Sub
+
