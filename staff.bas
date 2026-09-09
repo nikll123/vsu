@@ -63,22 +63,22 @@ histSheetName = getLastHistSheetName()
 End Function
 
 Public Function testDate(date1 As String) As Boolean
-chkRegEx.Pattern = "^2\d{5}$"
+chkRegEx.Pattern = "^2\d{5}$" ' 260101
 testDate = chkRegEx.test(date1)
 End Function
 
 Public Function testDate2(date1 As String) As Boolean
 chkRegEx.Pattern = "^([0-9]{2}).([0-9]{2}).([0-9]{4})$"
-testDate2 = chkRegEx.test(date1)
+testDate2 = chkRegEx.test(date1)  ' 26.10.2026
 End Function
 
 Public Function testDatePeriod(date1 As String) As Boolean
 chkRegEx.Pattern = "^ח ([0-9]{2}).([0-9]{2}).([0-9]{4}) ןמ ([0-9]{2}).([0-9]{2}).([0-9]{4})$"
-testDatePeriod = chkRegEx.test(date1)
+testDatePeriod = chkRegEx.test(date1) ' ח 26.10.2026 ןמ 26.10.2026
 End Function
 
 Function testPersonalFileName(date1 As String) As Boolean
-chkRegEx.Pattern = "^2\d{5}_ננב.xlsx$"
+chkRegEx.Pattern = "^2\d{5}_ננב.xlsx$" ' 261012_ננב.xlsx
 testPersonalFileName = chkRegEx.test(date1)
 End Function
 
@@ -572,7 +572,7 @@ Sub staffTodayOpen()
     Debug.Assert Len(path1) > 0
     ffn = wsPersonal.Cells(1, 1) & fn & "_ננב.xlsx"
     On Error Resume Next
-    Set wb = Workbooks.Open(Filename:=ffn, Password:=fn)
+    Set wb = Workbooks.Open(fileName:=ffn, Password:=fn)
     If IsEmpty(wb) Then
         MsgBox "קעמ-עמ ןמרכמ םו עאך" & vbCrLf & ffn
     End If
@@ -643,7 +643,7 @@ Public Function chekIfWbIsOpened(wbName As String, Optional isActive As Boolean 
          GoTo fileIsNotActive
     End If
         
-    End If
+
     GoTo exitFunction
 filenotopened:
     MsgBox ("The file " & wbName & " is not opened!")
@@ -654,3 +654,23 @@ fileIsNotActive:
 exitFunction:
     On Error GoTo 0
 End Function
+
+
+Public Function removeSubstring(s1 As String, s2 As String) As String
+    res = s1
+    pos = InStr(1, s1, s2, vbTextCompare)
+    If pos > 0 Then
+        s1 = Left(s1, pos - 1) & Mid(s1, pos + Len(s2))
+    End If
+    removeSubstring = s1
+End Function
+
+
+Sub exportMacro()
+repoDir = "C:\Users\SecundUser\OneDrive\Documents\vsu\persxls\"
+For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
+    m.Export (repoDir & m.Name & ".bas")
+Next
+'Set wbp = Workbooks("PERSONAL.xlsb").VBProject.VBComponents(1).Export()
+
+End Sub

@@ -143,7 +143,7 @@ Private Function GetProviderInfo(ByVal HashAlgorithm As HashAlgorithmType) As Pr
             provInfo.ProviderName = MS_ENHANCED_PROVIDER
             provInfo.ProviderType = PROV_RSA_AES
         Case Else
-            Err.Raise vbObjectError Or 1, "GetProviderInfo", "HashAlgorithm not implemented"
+            err.Raise vbObjectError Or 1, "GetProviderInfo", "HashAlgorithm not implemented"
     End Select
     
     GetProviderInfo = provInfo
@@ -174,9 +174,9 @@ Public Sub TestHash()
 End Sub
 
 
-Sub qq()
-    Debug.Print GetHashOfString("", CALG_MD5)
-End Sub
+'Sub qq()
+'    Debug.Print GetHashOfString("", CALG_MD5)
+'End Sub
 
 
 

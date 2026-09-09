@@ -57,18 +57,22 @@ Function bchs() As String
     chgBchs = Cells(1, 5)
     bchs = "2. "
     If Cells(1, 5) Then ' БЧС без изменений
-        bchs = bchs & "Без змін" & vbCrLf
+        bchs = bchs & "Без змін"
     Else
         For r = 14 To 19
-            bchs = bchs & IIf(r = 14, "", "   ") & Cells(r, 1) & " " & Cells(r, 2) & "; " & Cells(r, 3) & " " & Cells(r, 4) & "; " & vbCrLf
+            bchs = bchs & Cells(r, 1) & " " & Cells(r, 2) & "; " & Cells(r, 3) & " " & Cells(r, 4) & "; " '& vbCrLf
         Next r
+        bchs = removeSubstring(bchs, " хворі 0; ")
+        bchs = removeSubstring(bchs, " переведення 0; ")
+        bchs = removeSubstring(bchs, "  ; ")
     End If
+    bchs = bchs & vbCrLf
 End Function
 
 
 Function br4() As String
     br4 = "4. "
-    For r = 47 To 50
+    For r = 47 To 60
         v = Cells(r, 1)
         If v <> "" Then
               v = v & vbCrLf
@@ -102,7 +106,7 @@ Function part5() As String
     
     part5 = part5 & "Наступним військовослужбовцям продовжити бойове чергування на позиціях (комплексах): "
     
-    For c = 5 To 12  ' E - L
+    For c = 4 To 12  ' E - L
         reb = Cells(28, c)
         reb = Replace(reb, vbLf, " ")
         rebTxt = ""
@@ -141,22 +145,22 @@ End Function
 
 Function part6() As String
     part6 = "6. "
-    part6 = part6 & Cells(55, 1) & " " & _
-                    Cells(55, 2) & " " & _
-                    Cells(55, 3) & " " & _
-                    Cells(55, 4) & vbCrLf
+    part6 = part6 & Cells(65, 1) & " " & _
+                    Cells(65, 2) & " " & _
+                    Cells(65, 3) & " " & _
+                    Cells(65, 4) & vbCrLf
 End Function
 
 Function partBRs() As String
     partBRs = "7. "
-    s1 = ""
-    For r = 61 To 79
+'    s1 = ""
+    For r = 71 To 107
         If Cells(r, 1) <> "" Then
-        Str1 = txtPack(Cells(r, 1) & " " & Cells(r, 2) & ";")
+            Str1 = txtPack(Cells(r, 1) & vbCrLf & Cells(r, 2) & ";")
             partBRs = partBRs & s1 & Str1 & vbCrLf
-            If s1 = "" Then
-                s1 = "   "
-            End If
+'            If s1 = "" Then
+'                s1 = "   "
+'            End If
         End If
     Next
 End Function
@@ -174,7 +178,7 @@ End Function
 
 Function part8() As String
     part8 = "8. "
-    part8 = part8 & Cells(82, 1) & vbCrLf
+    part8 = part8 & Cells(110, 1) & vbCrLf
     
 End Function
 
@@ -188,7 +192,7 @@ Function part10() As String
 End Function
 
 Function sign() As String
-    sign = "Командир роти РЕБ капітан               Микола Хамаганов" & vbCrLf
+    sign = "Командир роти РЕБ капітан               Микола Хамаганов"
 End Function
 
 Function writeTxtFileAndOpen(txt As String, repDate As Date)
@@ -222,6 +226,10 @@ End Function
 
 
 Sub copyGBDData_int(d1 As Date)
+    If MsgBox("Copy data for " & d1, vbYesNo, "Question") = vbNo Then
+        Exit Sub
+    End If
+
     If Not checkEnv() Then
         Exit Sub
     End If
@@ -276,8 +284,8 @@ Sub copyBchs(d1 As Date, txtPos As String)
     sn = getLastHistSheetName(dd)
     Set wsStaff = Workbooks("штатка.xlsx").Sheets(sn)
     Set wsTarget = ActiveSheet
-    hash1 = RangeToMD5(wsStaff.Range("S132:S139"))
-    hash2 = RangeToMD5(wsStaff.Range("U132:U139"))
+    hash1 = RangeToMD5(wsStaff.Range("S133:S140"))
+    hash2 = RangeToMD5(wsStaff.Range("U133:U140"))
     Debug.Assert hash1 = "790455133cb9dd7bfcff9eae1b77936d"
     Debug.Assert hash2 = "63f11f011be33b6d99bf31fb63e41c3b"
 '    Dim vArray() As Variant
@@ -296,8 +304,8 @@ Sub copyBchs(d1 As Date, txtPos As String)
         r4 = 9
     End If
     
-    Range(Cells(r1, 1), Cells(r2, 4)) = wsStaff.Range("S132:V136").Value
-    Range(Cells(r3, 1), Cells(r4, 4)) = wsStaff.Range("S138:V139").Value
+    Range(Cells(r1, 1), Cells(r2, 4)) = wsStaff.Range("S133:V137").Value
+    Range(Cells(r3, 1), Cells(r4, 4)) = wsStaff.Range("S139:V140").Value
     
 End Sub
 
@@ -305,3 +313,6 @@ Sub copyGBDData()
     copyGBDData_int (getDate(1))
 End Sub
 
+Sub copyGBDDataBack()
+    copyGBDData_int (getDate(-1))
+End Sub
