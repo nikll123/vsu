@@ -669,7 +669,9 @@ End Function
 Sub exportMacro()
 repoDir = "C:\Users\SecundUser\OneDrive\Documents\vsu\persxls\"
 For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
-    m.Export (repoDir & m.Name & ".bas")
-    Debug.Print m.Name
+    If m.Type = 1 Then ' vbext_ct_StdModule
+        m.Export (repoDir & m.Name & ".bas")
+        'Debug.Print m.Name
+    End If
 Next
 End Sub
