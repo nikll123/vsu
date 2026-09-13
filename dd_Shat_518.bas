@@ -16,12 +16,12 @@ Sub Ceels()
         c1.Select
         For Each c2 In ws518.Range("E36:E56")
             If c1.Value = c2.Value Then
-                Set Cel = ws518.Cells(c2.Row, 13)
-                Set CelSt = wsStuff.Cells(c1.Row, 24)
-                If ws518.Cells(c2.Row, 13).Value = wsStuff.Cells(c1.Row, 24).Value Then
+                Set Cel = ws518.Cells(c2.row, 13)
+                Set CelSt = wsStuff.Cells(c1.row, 24)
+                If ws518.Cells(c2.row, 13).Value = wsStuff.Cells(c1.row, 24).Value Then
                    Cel.Interior.Color = CelSt.Interior.Color 'шо було
                 Else
-                   ws518.Cells(c2.Row, 13).Value = wsStuff.Cells(c1.Row, 24).Value
+                   ws518.Cells(c2.row, 13).Value = wsStuff.Cells(c1.row, 24).Value
                    Cel.Interior.Color = 65535 'жовтий
                 End If
             End If

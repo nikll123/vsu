@@ -671,7 +671,7 @@ End Function
 '    for
 'End Sub
 
-Sub exportMacro()
+Sub exportMacroAll()
 For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
     If m.Type = 1 Then ' vbext_ct_StdModule
         m.Export (constRepoDir & m.Name & ".bas")
@@ -680,7 +680,7 @@ For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
 Next
 End Sub
 
-Sub removeMacro()
+Sub removeMacroAll()
 For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
     If m.Type = 1 Then ' vbext_ct_StdModule
         Workbooks("PERSONAL.xlsb").VBProject.VBComponents.Remove (m)

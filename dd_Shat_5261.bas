@@ -17,13 +17,13 @@ Sub Ceels()
     ws526.Range("A1") = "БОЙОВИЙ ТА ЧИСЕЛЬНИЙ СКЛАД" & vbCrLf & "158 омбр станом на " & Date
     For Each c1 In wsStuff.Range("C6:AE13")
         c1.Select
-        Set Cel = ws526.Cells(c1.Row, c1.Column)
+        Set Cel = ws526.Cells(c1.row, c1.Column)
         Set CelSt = wsStuff.Cells(5, c1.Column)
         If Left(Cel.Value, 1) <> "=" Then
-            If ws526.Cells(c1.Row, c1.Column).Value = c1.Value Then
+            If ws526.Cells(c1.row, c1.Column).Value = c1.Value Then
                Cel.Interior.Color = CelSt.Interior.Color 'шо було
             Else
-               ws526.Cells(c1.Row, c1.Column).Value = c1.Value
+               ws526.Cells(c1.row, c1.Column).Value = c1.Value
                Cel.Interior.Color = 65535 'жовтий
             End If
         End If
@@ -32,7 +32,7 @@ Sub Ceels()
     
     
     wsStuff.Activate
-    Range("C6:AE13").Copy
+    Range("C6:AE13").copy
 
     Range("C26").Select
     Selection.PasteSpecial Paste:=xlPasteValues

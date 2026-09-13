@@ -95,12 +95,12 @@ Sub Ceels()
         If c1.Value <> "" Then
             c1.Select
             kvoE = kvoVchod(docWord, c1.Value)
-            If kvoE = 0 And wsTabel.Cells(c1.Row, nomColDana).Value = 100 Then
+            If kvoE = 0 And wsTabel.Cells(c1.row, nomColDana).Value = 100 Then
                 'filePath = filePath & "В підсумковом повинен бути: " & c1.Value & vbLf
                 'txtFile.Write "В підсумковом немає: " & c1.Value
                 txtFile.WriteLine "В підсумковом немає: " & c1.Value
             End If
-            If kvoE = 1 And wsTabel.Cells(c1.Row, nomColDana).Value <> 100 Then
+            If kvoE = 1 And wsTabel.Cells(c1.row, nomColDana).Value <> 100 Then
                 'filePath = filePath & "В підсумковом не повинно бути: " & c1.Value & vbLf
                 'txtFile.Write "В підсумковом не повинно бути: " & c1.Value
                 txtFile.WriteLine "В підсумковом не повинно бути: " & c1.Value
@@ -126,7 +126,7 @@ Sub Ceels()
     Next
     'filePath = filePath & "Повний бардак"
     txtFile.Write textData & " Закінчили"
-    Workbooks.Open Filename:=filePath
+    Workbooks.Open fileName:=filePath
     Exit Sub
     
 filesNotOpened:
