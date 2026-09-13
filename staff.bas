@@ -679,3 +679,14 @@ For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
     End If
 Next
 End Sub
+
+Sub removeMacro()
+For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
+    If m.Type = 1 Then ' vbext_ct_StdModule
+        Workbooks("PERSONAL.xlsb").VBProject.VBComponents.Remove (m)
+        Debug.Print m.Name
+    End If
+Next
+End Sub
+
+
