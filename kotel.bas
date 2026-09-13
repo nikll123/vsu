@@ -127,3 +127,81 @@ Sub kotel2()
     Set wrdApp = Nothing
 
 End Sub
+
+Sub kotelLBS()
+    r1 = 0
+    'rng1 = "A2:J2"
+    curDate = Range("M2")
+    lastDataRow = Cells(Rows.Count, "A").End(xlUp).row
+    For Each c In Range("A2", "A" & lastDataRow)
+        If c = curDate Then
+            r1 = c.row
+            Exit For
+        End If
+    Next
+    If r1 = 0 Then
+        r1 = lastDataRow + 1
+    End If
+    Set rr = Range("A" & r1 & ":K" & r1)
+    Range("M2:W2").copy
+    rr.PasteSpecial (xlPasteValues)
+    'rr.Select
+    Application.CutCopyMode = False
+    
+'    On Error Resume Next
+'    Set appWord = GetObject(, "Word.Application")
+'    If appWord Is Nothing Then
+'        Set appWord = CreateObject("Word.Application")
+'    End If
+'    On Error GoTo 0
+'
+'    Const lbsFileName = "R:\stroy158\котел\лбс\Перевірка ЛБЗ рота РЕБ.doc"
+'    appWord.Visible = True
+'    Set WrdDoc = appWord.Documents.Open(lbsFileName, Format:=0)
+'    strWorkbookPath = ActiveWorkbook.FullName
+'    Set myMerge = WrdDoc.MailMerge
+'    If myMerge.State = wdMainAndSourceAndHeader Or myMerge.State = wdMainAndDataSource Then
+'         With myMerge.DataSource
+'            .FirstRecord = 1
+'            .LastRecord = 1
+'         End With
+'    End If
+'
+'
+'    WrdDoc.MailMerge.Execute
+'
+'        With WrdDoc.MailMerge
+'        ' Connect the active Excel workbook as the data source
+'        .OpenDataSource _
+'            Name:=strWorkbookPath, _
+'            ConfirmConversions:=False, _
+'            ReadOnly:=False, _
+'            LinkToSource:=True, _
+'            AddToRecentFiles:=False, _
+'            Connection:="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & strWorkbookPath & ";", _
+'            SQLStatement:="SELECT * FROM [Sheet1$]" ' Change Sheet1 to your exact worksheet name
+'
+'        ' Set destination to a new document (wdSendToNewDocument = 0)
+'        .Destination = 0
+'
+'        ' Suppress blank lines if necessary
+'        .SuppressBlankLines = True
+'
+'        ' Run the merge
+'        .Execute Pause:=False
+'    End With
+'
+'    ' Close the original template document without saving changes
+'    wdDoc.Close SaveChanges:=0 ' wdDoNotSaveChanges = 0
+'
+'    ' Clean up object references
+'    Set wdDoc = Nothing
+'    Set wdApp = Nothing
+'
+'    MsgBox "Mail merge completed successfully!", vbInformation
+'
+'
+'
+'    newFn = "R:\stroy158\котел\лбс\Перевірка ЛБЗ рота РЕБ " & curDate & ".doc"
+'    WrdDoc.SaveAs2 (newFn)
+End Sub
