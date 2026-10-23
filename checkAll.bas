@@ -5,11 +5,16 @@ Function getWordText(fileName) As String
     Set WrdDoc = appWord.Documents.Open(fileName)
     getWordText = WrdDoc.Content.text
     WrdDoc.Close
-    appWord.Quit
-    Set appWord = Nothing
-    Exit Function
+    GoTo fine
 err:
     MsgBox "Error on the file opening: " & fileName & vbCrLf & err.Description
+    getWordText = "err"
+    
+fine:
+    If IsObject(appWord) Then
+        appWord.Quit
+        Set appWord = Nothing
+    End If
 End Function
 
 
@@ -33,6 +38,7 @@ Sub checkGBD()
     Debug.Assert ActiveSheet.Name = "Табель"
     Dim date1 As Date
     Dim txt1 As String
+    Dim txt0 As String
     Dim fio As String
     If Not testDate2(Format(ActiveCell.Value)) Then
         MsgBox "Неверная дата: " & Format(ActiveCell.Value)
@@ -45,7 +51,22 @@ Sub checkGBD()
     fn = getPbdFileName(date1)
     Debug.Print fn
     txt1 = getWordText(fn)
+    If txt1 = "err" Then Exit Sub
     resMsg = ""
+    'R:\БР\ПідсумковеБД\488.ПБД_Ф_5.18_рРЕБ_29.09.2026.docx
+    nnn = Mid(fn, 20, 3)
+    ddd = Mid(fn, 40, 10)
+    txt0 = "№ " & nnn & " дск"
+    If InStr2(txt1, txt0) = 0 Then
+        MsgBox "Нет правильного номера дск: " & txt0
+        Exit Sub
+    End If
+    txt0 = "21:00 " & ddd & ". Карта 1:25000, видання 2025 року"
+    If InStr2(txt1, txt0) = 0 Then
+        MsgBox "Нет правильной фразы с датой: " & txt0
+        Exit Sub
+    End If
+    
     For r = 9 To 63
         fio = ActiveSheet.Cells(r, cFio).Value
         cnt = InStr2(txt1, fio)
@@ -57,7 +78,7 @@ Sub checkGBD()
         End If
     Next
     If resMsg = "" Then
-        resMsg = "Все ок"
+        resMsg = date1 & vbCrLf & " Все ок"
     End If
     MsgBox resMsg
 End Sub
