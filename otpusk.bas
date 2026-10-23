@@ -45,6 +45,7 @@ Function int_checkOtpusk(date1 As Date, msg As String) As Integer
     int_checkOtpusk = 0
     If ActiveWorkbook.Name <> constStuffWbName Then ' штатка
         MsgBox constStuffWbName & " must be active!"
+        int_checkOtpusk = -1
         Exit Function
     End If
     nameOtpusk = "отпуска"

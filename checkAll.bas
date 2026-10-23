@@ -1,14 +1,14 @@
 Attribute VB_Name = "checkAll"
-Function getWordText(fileName) As String
+Function getWordDocText(fileName) As String
     On Error GoTo err
     Set appWord = CreateObject("Word.Application")
     Set WrdDoc = appWord.Documents.Open(fileName)
-    getWordText = WrdDoc.Content.text
+    getWordDocText = WrdDoc.Content.text
     WrdDoc.Close
     GoTo fine
 err:
     MsgBox "Error on the file opening: " & fileName & vbCrLf & err.Description
-    getWordText = "err"
+    getWordDocText = "err"
     
 fine:
     If IsObject(appWord) Then
@@ -20,7 +20,7 @@ End Function
 
 Sub test()
     Debug.Print getPbdFileName(Now())
-    'qq = getWordText("R:\БР\бр\Бойове розпорядження з РЕБ рРЕБ Бетон нова 158 омбр 102025.docx11")
+    'qq = getWordDocText("R:\БР\бр\Бойове розпорядження з РЕБ рРЕБ Бетон нова 158 омбр 102025.docx11")
 End Sub
 
 
@@ -37,7 +37,7 @@ End Function
 Sub checkGBD()
     Debug.Assert ActiveSheet.Name = "Табель"
     Dim date1 As Date
-    Dim txt1 As String
+    Dim txtWordDocText As String
     Dim txt0 As String
     Dim fio As String
     If Not testDate2(Format(ActiveCell.Value)) Then
@@ -50,26 +50,26 @@ Sub checkGBD()
     cFio = 8
     fn = getPbdFileName(date1)
     Debug.Print fn
-    txt1 = getWordText(fn)
-    If txt1 = "err" Then Exit Sub
+    txtWordDocText = getWordDocText(fn)
+    If txtWordDocText = "err" Then Exit Sub
     resMsg = ""
     'R:\БР\ПідсумковеБД\488.ПБД_Ф_5.18_рРЕБ_29.09.2026.docx
     nnn = Mid(fn, 20, 3)
     ddd = Mid(fn, 40, 10)
     txt0 = "№ " & nnn & " дск"
-    If InStr2(txt1, txt0) = 0 Then
+    If InStr2(txtWordDocText, txt0) = 0 Then
         MsgBox "Нет правильного номера дск: " & txt0
         Exit Sub
     End If
     txt0 = "21:00 " & ddd & ". Карта 1:25000, видання 2025 року"
-    If InStr2(txt1, txt0) = 0 Then
+    If InStr2(txtWordDocText, txt0) = 0 Then
         MsgBox "Нет правильной фразы с датой: " & txt0
         Exit Sub
     End If
     
     For r = 9 To 63
         fio = ActiveSheet.Cells(r, cFio).Value
-        cnt = InStr2(txt1, fio)
+        cnt = InStr2(txtWordDocText, fio)
         money = ActiveSheet.Cells(r, c).Value
         If 100 = money And cnt <> 1 Or money <> 100 And cnt > 0 Then
             resMsg = resMsg & "Проблемы с " & fio & ": " & money & " " & cnt & vbCrLf

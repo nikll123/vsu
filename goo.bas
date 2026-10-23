@@ -8,6 +8,35 @@ Const rngTitile = "R2:R81"
 Const rngPosition = "I2:I81"
 Const posLongRange = "J2:J81"
 
+Sub test()
+    getBchsData #1/1/2026#
+End Sub
+
+Sub getBchsData(date1 As Date)
+
+    Dim httpReq As Object, url As String
+    
+    'Set http = CreateObject("MSXML2.XMLHTTP")
+    Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
+    
+    ' Create the HTTP object
+    'GET https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!A1:D5
+    'url = "https://sheets.googleapis.com/v4/spreadsheets/AKfycbxBcrKfNMZ_CaHWyWLhfxfQhPdzOMlz64QnwmegU59O4MaO4wnpdK6YLcUb7wPUUA771w/values/Sheet1!A1:D5"
+    url = "https://script.google.com/macros/s/AKfycbyUqYX7Ytli5KJMNLukKxy8jrHXsr76i2240AQOcKP9YAemf8kdrn7rR2JRKAIXDFD0/exec"
+    url = "https://www.ukr.net/ru/"
+    
+    ' Send the data to the Google Sheets via the Google Apps Script web app
+
+    httpReq.Open "GET", url, False
+    httpReq.send
+
+    
+'    Do Until httpReq.readyState = 4: Loop
+'
+'    res = httpReq.respopnseText
+'    Debug.Print (res)
+
+End Sub
 
 
 Sub UploadStaff()
@@ -71,7 +100,7 @@ Sub UploadStaff()
     ' Send the data to the Google Sheets via the Google Apps Script web app
     http.Open "POST", url, False
     http.setRequestHeader "Content-Type", "application/json"
-    http.Send jsonData
+    http.send jsonData
     
     ' Check the response
     If http.Status = 200 Then

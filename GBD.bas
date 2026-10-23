@@ -33,7 +33,7 @@ Sub gbdGenerate()
     txt1 = txt1 & part5()                 ' 5.  Œ–Œ“ ≈ –≤ÿ≈ÕÕﬂ  ŒÃ¿Õƒ»–¿ ≤ œŒ—“¿¬À≈Õ≤  «¿¬ƒ¿ÕÕﬂ œ≤ƒœŒ–ﬂƒ Œ¬¿Õ»Ã œ≤ƒ–Œ«ƒ≤À¿Ã
     txt1 = txt1 & part6()                 ' 6. ’≤ƒ ¡Œ…Œ¬»’ ƒ≤…
     brs = partBRs()                       ' 7. ”“Œ◊Õ≈Õ≤ –≤ÿ≈ÕÕﬂ “¿ –Œ«œŒ–ﬂƒ∆≈ÕÕﬂ  ﬂ ≤ ¬≤ƒƒ¿¬¿À»—ﬂ
-    lastBrHashRow = 61
+    lastBrHashRow = 85
     lastBrHash = Cells(lastBrHashRow, 5)
     newBrHash = StringToMD5Hex(brs)
     If lastBrHash = newBrHash Then
@@ -59,13 +59,20 @@ Function bchs() As String
     If Cells(1, 5) Then ' ¡◊— ·ÂÁ ËÁÏÂÌÂÌËÈ
         bchs = bchs & "¡ÂÁ ÁÏ≥Ì"
     Else
-        For r = 14 To 19
-            bchs = bchs & Cells(r, 1) & " " & Cells(r, 2) & "; " & Cells(r, 3) & " " & Cells(r, 4) & "; " '& vbCrLf
+        For r = 14 To 18
+            If Cells(r, 2) > 0 Then
+                bchs = bchs & Cells(r, 1) & " " & Cells(r, 2) & "; "
+            End If
+            If Cells(r, 4) > 0 Then
+                bchs = bchs & Cells(r, 3) & " " & Cells(r, 4) & "; "
+            End If
         Next r
-        bchs = removeSubstring(bchs, " ı‚Ó≥ 0; ")
-        bchs = removeSubstring(bchs, " ÔÂÂ‚Â‰ÂÌÌˇ 0; ")
-        bchs = removeSubstring(bchs, "  ; ")
+'        bchs = removeSubstring(bchs, " ı‚Ó≥ 0; ")
+'        bchs = removeSubstring(bchs, " ÔÂÂ‚Â‰ÂÌÌˇ 0; ")
+'        bchs = removeSubstring(bchs, "  ; ")
+        bchs = bchs & Cells(r, 1) & ": " & Cells(r, 2) & ", " & Cells(r, 3) & ", " & Cells(r, 4)
     End If
+    
     bchs = bchs & vbCrLf
 End Function
 
@@ -144,17 +151,21 @@ End Function
 
 
 Function part6() As String
+    r = 79
+    Debug.Assert Cells(r, 1) = "6. ÔÓ‰ËË"
+    r = r + 1
     part6 = "6. "
-    part6 = part6 & Cells(65, 1) & " " & _
-                    Cells(65, 2) & " " & _
-                    Cells(65, 3) & " " & _
-                    Cells(65, 4) & vbCrLf
+    part6 = part6 & Cells(r, 1) & " " & _
+                    Cells(r, 2) & " " & _
+                    Cells(r, 3) & " " & _
+                    Cells(r, 4) & vbCrLf
 End Function
 
 Function partBRs() As String
+    r0 = 85
+    Debug.Assert Cells(r0, 1) = "7. ·˚"
     partBRs = "7. "
-'    s1 = ""
-    For r = 71 To 107
+    For r = r0 + 1 To r0 + 36
         If Cells(r, 1) <> "" Then
             Str1 = txtPack(Cells(r, 1) & vbCrLf & Cells(r, 2) & ";")
             partBRs = partBRs & s1 & Str1 & vbCrLf
@@ -177,8 +188,11 @@ Function txtPack(txt1 As String) As String
 End Function
 
 Function part8() As String
+    r0 = 124
+    Debug.Assert Cells(r0, 1) = "8. ‚Ú‡Ú˚"
+    r0 = r0 + 1
     part8 = "8. "
-    part8 = part8 & Cells(110, 1) & vbCrLf
+    part8 = part8 & Cells(r0, 1) & vbCrLf
     
 End Function
 
@@ -284,8 +298,8 @@ Sub copyBchs(d1 As Date, txtPos As String)
     sn = getLastHistSheetName(dd)
     Set wsStaff = Workbooks("¯Ú‡ÚÍ‡.xlsx").Sheets(sn)
     Set wsTarget = ActiveSheet
-    hash1 = RangeToMD5(wsStaff.Range("S133:S140"))
-    hash2 = RangeToMD5(wsStaff.Range("U133:U140"))
+    hash1 = RangeToMD5(wsStaff.Range("S134:S141")) ' ∆¡ƒ ‰Ë‡Ô‡ÁÓÌ 1
+    hash2 = RangeToMD5(wsStaff.Range("U134:U141")) ' ∆¡ƒ ‰Ë‡Ô‡ÁÓÌ 2
     Debug.Assert hash1 = "790455133cb9dd7bfcff9eae1b77936d"
     Debug.Assert hash2 = "63f11f011be33b6d99bf31fb63e41c3b"
 '    Dim vArray() As Variant
@@ -304,8 +318,8 @@ Sub copyBchs(d1 As Date, txtPos As String)
         r4 = 9
     End If
     
-    Range(Cells(r1, 1), Cells(r2, 4)) = wsStaff.Range("S133:V137").Value
-    Range(Cells(r3, 1), Cells(r4, 4)) = wsStaff.Range("S139:V140").Value
+    Range(Cells(r1, 1), Cells(r2, 4)) = wsStaff.Range("S134:V138").Value
+    Range(Cells(r3, 1), Cells(r4, 4)) = wsStaff.Range("S140:V141").Value
     
 End Sub
 

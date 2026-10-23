@@ -55,7 +55,7 @@ wsEgos.Name = "egos"
 'wsFio.Name = "FIOs"
 
 Dim statusesRange As Range
-Set statusesRange = wbStuff.Sheets("egos").Range("A2:C16")
+Set statusesRange = wbStuff.Sheets("egos").Range("A2:C17")
 Dim arStatuses As Variant
 arStatuses = statusesRange.Value
 
@@ -130,6 +130,7 @@ If repType1 = monthStaffList Then
 End If
 
 rowCur = 1
+rFirst = rowCur + 1
 For i = 2 To 100
     fio = wsEgos.Cells(i, 2).Value
     If fio <> "" Then
@@ -142,7 +143,8 @@ For i = 2 To 100
 Next i
 
 ' на котле
-rowCur = rowCur + 3
+rLast = rowCur
+rowTotal = rowCur + 3
 
 For i = 0 To (date2 - date1)
     curDate = date1 + i '- 1 ' сдвиг на 1 день назад потому что котел подается на один день вперед
@@ -165,8 +167,12 @@ For i = 0 To (date2 - date1)
             End If
         Next j
         
-
-        wsEgos.Cells(rowCur, i + dateColShift).Value = kotel1
+        col1 = i + dateColShift
+        wsEgos.Cells(rowTotal, col1).Value = kotel1
+        ColLetter = Split(wsEgos.Cells(rowTotal, col1).Address, "$")(1)
+        wsEgos.Cells(rowTotal + 1, col1).Formula = "=COUNTIF(" & ColLetter & rFirst & ":" & ColLetter & rLast & ",""+"")"
+        wsEgos.Cells(rowTotal + 2, col1).Formula = "=" & ColLetter & rowTotal + 1 & "-" & ColLetter & rowTotal & ""
+        ' "=RC[" & rFirst & ",5]"
     End If
     'Debug.Print res1
 
