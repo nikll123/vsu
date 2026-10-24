@@ -12,30 +12,42 @@ Sub test()
     getBchsData #1/1/2026#
 End Sub
 
-Sub getBchsData(date1 As Date)
-
+Sub googleSheetsTet()
     Dim httpReq As Object, url As String
-    
-    'Set http = CreateObject("MSXML2.XMLHTTP")
     Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
-    
-    ' Create the HTTP object
-    'GET https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!A1:D5
-    'url = "https://sheets.googleapis.com/v4/spreadsheets/AKfycbxBcrKfNMZ_CaHWyWLhfxfQhPdzOMlz64QnwmegU59O4MaO4wnpdK6YLcUb7wPUUA771w/values/Sheet1!A1:D5"
     url = "https://script.google.com/macros/s/AKfycbyUqYX7Ytli5KJMNLukKxy8jrHXsr76i2240AQOcKP9YAemf8kdrn7rR2JRKAIXDFD0/exec"
-    url = "https://www.ukr.net/ru/"
     
-    ' Send the data to the Google Sheets via the Google Apps Script web app
-
+    On Error GoTo errHandle
     httpReq.Open "GET", url, False
     httpReq.send
-
+    Do Until httpReq.readyState = 4: Loop
+    res = httpReq.responseText
+    On Error GoTo 0
     
-'    Do Until httpReq.readyState = 4: Loop
-'
-'    res = httpReq.respopnseText
-'    Debug.Print (res)
+    MsgBox "Test is passed" & vbCr & res
+    Exit Sub
 
+errHandle:
+    MsgBox "Test is failed" & vbCr & err.Description
+End Sub
+
+Sub getGoogleSheetsData(date1 As Date)
+    Dim httpReq As Object, url As String
+    Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
+    url = "https://script.google.com/macros/s/AKfycbyUqYX7Ytli5KJMNLukKxy8jrHXsr76i2240AQOcKP9YAemf8kdrn7rR2JRKAIXDFD0/exec"
+    
+    On Error GoTo errHandle
+    httpReq.Open "GET", url, False
+    httpReq.send
+    Do Until httpReq.readyState = 4: Loop
+    res = httpReq.responseText
+    On Error GoTo 0
+    
+    MsgBox "Test is passed" & vbCr & res
+    Exit Sub
+
+errHandle:
+    MsgBox "Test is failed" & vbCr & err.Description
 End Sub
 
 
