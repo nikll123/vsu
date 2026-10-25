@@ -12,10 +12,10 @@ Sub test()
     getBchsData #1/1/2026#
 End Sub
 
-Sub googleSheetsTet()
+Sub httpTest()
     Dim httpReq As Object, url As String
     Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
-    url = "https://script.google.com/macros/s/AKfycbyUqYX7Ytli5KJMNLukKxy8jrHXsr76i2240AQOcKP9YAemf8kdrn7rR2JRKAIXDFD0/exec"
+    url = "https://www.ukr.net"
     
     On Error GoTo errHandle
     httpReq.Open "GET", url, False
@@ -24,11 +24,11 @@ Sub googleSheetsTet()
     res = httpReq.responseText
     On Error GoTo 0
     
-    MsgBox "Test is passed" & vbCr & res
+    MsgBox "Test is passed" & vbCr & res, vbInformation
     Exit Sub
 
 errHandle:
-    MsgBox "Test is failed" & vbCr & err.Description
+    MsgBox "Test is failed" & vbCr & err.Description, vbCritical
 End Sub
 
 Sub getGoogleSheetsData(date1 As Date)
