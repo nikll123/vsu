@@ -145,7 +145,14 @@ Sub kotelLBS()
     Set rr = Range("A" & r1 & ":K" & r1)
     Range("M2:W2").copy
     rr.PasteSpecial (xlPasteValues)
-    'rr.Select
+    For col = 3 To 4  ' C, D
+        Set cc = Cells(r1, col)
+        If cc.Value < 50 Then
+            cc.Interior.Color = RGB(255, 192, 192)
+        Else
+            cc.ClearFormats
+        End If
+    Next
     Application.CutCopyMode = False
     
 '    On Error Resume Next

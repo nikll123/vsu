@@ -25,7 +25,6 @@ Public Const constWsName526 = "БЧС"
  
 Public Const constWsName518 = "xx омбр"
 Public Const constwb518fileName As String = "рРЕБ Ф5.18.xlsx"
-Const constRepoDir As String = "R:\Media\macro\NN\"
 
 
 Dim chkRegEx As New RegExp
@@ -667,31 +666,6 @@ Public Function removeSubstring(s1 As String, s2 As String) As String
 End Function
 
 
-'Sub importMacro()
-'    for
-'End Sub
-
-Sub exportMacroAll()
-For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
-    If m.Type = 1 Then ' vbext_ct_StdModule
-        m.Export (constRepoDir & m.Name & ".bas")
-        Debug.Print m.Name
-    End If
-Next
-MsgBox "Done: " & constRepoDir
-End Sub
-
-Sub removeMacroAll()
-If MsgBox("Удалить все макросы?", vbOKCancel, constStuffWbName) = vbCancel Then Exit Sub
-For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
-    If m.Type = 1 Then ' vbext_ct_StdModule
-        Debug.Print m.Name
-        Workbooks("PERSONAL.xlsb").VBProject.VBComponents.Remove (m)
-    End If
-Next
-End Sub
-
-
 Sub activateCellOnSelectedSheets()
     c = ActiveCell.Column
     r = ActiveCell.row
@@ -701,7 +675,7 @@ Sub activateCellOnSelectedSheets()
     For Each ss In ActiveWindow.SelectedSheets
         If ss.Index <> ActiveSheet.Index Then
             'ss.Activate
-            Application.Goto ss.Cells(r, c)
+            Application.GoTo ss.Cells(r, c)
             ActiveWindow.ScrollColumn = sc
             ActiveWindow.ScrollRow = sr
         End If
