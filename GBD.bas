@@ -78,8 +78,10 @@ End Function
 
 
 Function br4() As String
+    r0 = 46
     br4 = "4. "
-    For r = 47 To 60
+    Debug.Assert Cells(r0, 1) = br4
+    For r = r0 + 1 To 77
         v = Cells(r, 1)
         If v <> "" Then
               v = v & vbCrLf
@@ -151,10 +153,10 @@ End Function
 
 
 Function part6() As String
-    r = 79
-    Debug.Assert Cells(r, 1) = "6. подии"
-    r = r + 1
+    r0 = 79
     part6 = "6. "
+    Debug.Assert Cells(r0, 1) = part6
+    r = r0 + 1
     part6 = part6 & Cells(r, 1) & " " & _
                     Cells(r, 2) & " " & _
                     Cells(r, 3) & " " & _
@@ -163,8 +165,8 @@ End Function
 
 Function partBRs() As String
     r0 = 85
-    Debug.Assert Cells(r0, 1) = "7. бры"
     partBRs = "7. "
+    Debug.Assert Cells(r0, 1) = partBRs
     For r = r0 + 1 To r0 + 36
         If Cells(r, 1) <> "" Then
             Str1 = txtPack(Cells(r, 1) & vbCrLf & Cells(r, 2) & ";")
@@ -189,11 +191,10 @@ End Function
 
 Function part8() As String
     r0 = 124
-    Debug.Assert Cells(r0, 1) = "8. втраты"
-    r0 = r0 + 1
     part8 = "8. "
-    part8 = part8 & Cells(r0, 1) & vbCrLf
-    
+    Debug.Assert Cells(r0, 1) = part8
+    r = r0 + 1
+    part8 = part8 & Cells(r, 1) & vbCrLf
 End Function
 
 Function part9() As String

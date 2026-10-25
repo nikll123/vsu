@@ -12,8 +12,6 @@ Sub test()
     getBchsData #1/1/2026#
 End Sub
 
-
-
 Sub int_httpTest(typeReq As String)
     Dim httpReq As Object, url As String, res As String
     Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
@@ -26,11 +24,12 @@ Sub int_httpTest(typeReq As String)
     res = httpReq.responseText
     On Error GoTo 0
     
-    MsgBox "Test is passed" & vbCr & Left(res, 15), vbInformation
+    MsgBox "Test is passed" & vbCr & typeReq & vbCr & httpReq.Status & vbCr & Left(res, 15), vbInformation
     Exit Sub
 
 errHandle:
-    MsgBox "Test is failed" & vbCr & err.Description, vbCritical
+    MsgBox "Test is failed" & vbCr & typeReq & vbCr & err.Description, vbCritical
+
 End Sub
 
 Sub httpTest()
