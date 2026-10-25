@@ -14,7 +14,8 @@ End Sub
 
 Sub int_httpTest(typeReq As String)
     Dim httpReq As Object, url As String, res As String
-    Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
+    'Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
+    Set httpReq = CreateObject("MSXML2.XMLHTTP")
     url = "https://www.ukr.net"
     
     On Error GoTo errHandle
@@ -39,27 +40,28 @@ End Sub
 
 Sub getGoogleSheetsData()
     int_getGoogleSheetsData (#10/25/2026#)
-    int_httpTest ("POST")
 End Sub
 
 Sub int_getGoogleSheetsData(date1 As Date)
     Dim httpReq As Object, url As String
     Set httpReq = CreateObject("MSXML2.ServerXMLHTTP")
-    url = "https://script.google.com/macros/s/AKfycbyUqYX7Ytli5KJMNLukKxy8jrHXsr76i2240AQOcKP9YAemf8kdrn7rR2JRKAIXDFD0/exec"
+    
+    url = "https://script.google.com/macros/s/AKfycbzx7PT5PoyQ5rgLbyK3Bx9ZSuTXS56Pup6g0a7FDuT0drUDVhK-SsvroYTL6v3QUWJsOw/exec"
+    url = url & "?" & "date1=" & date1
+           
     
     On Error GoTo errHandle
     httpReq.Open "GET", url, False
     httpReq.send
     Do Until httpReq.readyState = 4: Loop
     res = httpReq.responseText
-    httpReq.Status
     On Error GoTo 0
     
-    MsgBox "Test is passed" & vbCr & res
+    MsgBox res
     Exit Sub
 
 errHandle:
-    MsgBox "Test is failed" & vbCr & err.Description
+    MsgBox "Failed" & vbCr & httpReq.Status & vbCr & err.Description
 End Sub
 
 

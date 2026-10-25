@@ -212,18 +212,31 @@ End Function
 
 Function writeTxtFileAndOpen(txt As String, repDate As Date)
 
-Dim fso As Object
-Set fso = CreateObject("Scripting.FileSystemObject")
-Dim oFile As Object
-strPath = fso.GetSpecialFolder(2) & "\" & repDate & "_" & fso.GetTempName()
-Set oFile = fso.CreateTextFile(strPath)
-oFile.WriteLine txt
-oFile.Close
-Set fso = Nothing
-Set oFile = Nothing
-retVal = Shell("notepad.exe " & strPath, vbNormalFocus)
-
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Dim oFile As Object
+    strPath = fso.GetSpecialFolder(2) & "\" & repDate & "_" & fso.GetTempName()
+    Set oFile = fso.CreateTextFile(strPath)
+    oFile.WriteLine txt
+    oFile.Close
+    Set fso = Nothing
+    Set oFile = Nothing
+    retVal = Shell("notepad.exe " & strPath, vbNormalFocus)
+    
 End Function
+
+Public Function readTxtFile(fileName As String)
+    Dim fso As Object
+    Const ForReading = 1
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set oFile = fso.OpenTextFile(fileName, ForReading)
+    readTxtFile = oFile.ReadAll()
+    oFile.Close
+    Set fso = Nothing
+    Set oFile = Nothing
+End Function
+
+
 
 Function getDate(shift As Integer) As Date
     Debug.Assert checkEnv()
