@@ -24,7 +24,7 @@ Sub httpTest()
     res = httpReq.responseText
     On Error GoTo 0
     
-    MsgBox "Test is passed" & vbCr & res, vbInformation
+    MsgBox "Test is passed" & vbCr & Left(res, 15), vbInformation
     Exit Sub
 
 errHandle:
