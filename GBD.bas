@@ -49,7 +49,7 @@ Sub gbdGenerate()
 
     Dim repDate As Date
     repDate = Cells(29, 1)
-    writeTxtFileAndOpen txt1, repDate
+    writeTxtPids txt1, repDate
     
 End Sub
 
@@ -210,18 +210,24 @@ Function sign() As String
     sign = "Командир роти РЕБ капітан               Микола Хамаганов"
 End Function
 
-Function writeTxtFileAndOpen(txt As String, repDate As Date)
+Function writeTxtPids(txt As String, repDate As Date)
+   Set fso = CreateObject("Scripting.FileSystemObject")
+   Dim strPath As String
+   strPath = fso.GetSpecialFolder(2) & "\" & repDate & "_" & fso.GetTempName()
+   writeTxtPids = int_writeTxtFileAndOpen(txt, strPath)
+End Function
+
+Function int_writeTxtFileAndOpen(txt As String, fileName As String)
 
     Dim fso As Object
     Set fso = CreateObject("Scripting.FileSystemObject")
     Dim oFile As Object
-    strPath = fso.GetSpecialFolder(2) & "\" & repDate & "_" & fso.GetTempName()
-    Set oFile = fso.CreateTextFile(strPath)
+    Set oFile = fso.CreateTextFile(fileName)
     oFile.WriteLine txt
     oFile.Close
     Set fso = Nothing
     Set oFile = Nothing
-    retVal = Shell("notepad.exe " & strPath, vbNormalFocus)
+    retVal = Shell("notepad.exe " & fileName, vbNormalFocus)
     
 End Function
 

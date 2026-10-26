@@ -8,9 +8,9 @@ Const rngTitile = "R2:R81"
 Const rngPosition = "I2:I81"
 Const posLongRange = "J2:J81"
 
-Sub test()
-    getBchsData #1/1/2026#
-End Sub
+'Sub test()
+'    getBchsData #1/1/2026#
+'End Sub
 
 Sub int_httpTest(typeReq As String)
     Dim httpReq As Object, url As String, res As String
