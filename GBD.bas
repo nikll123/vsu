@@ -214,11 +214,28 @@ Function writeTxtPids(txt As String, repDate As Date)
    Set fso = CreateObject("Scripting.FileSystemObject")
    Dim strPath As String
    strPath = fso.GetSpecialFolder(2) & "\" & repDate & "_" & fso.GetTempName()
-   writeTxtPids = int_writeTxtFileAndOpen(txt, strPath)
+   writeTxtPids = writeTxtFileAndOpen(txt, strPath)
 End Function
 
-Function int_writeTxtFileAndOpen(txt As String, fileName As String)
+Function writeTxtFileAndOpen(txt As String, fileName As String)
+    fn = int_writeTxtFile(txt, fileName)
+    If fn <> "" Then
+        retVal = openTxtFile(fileName)
+    End If
+End Function
 
+Public Function openTxtFile(fileName As String) As Integer
+    openTxtFile = Shell("notepad.exe " & fileName, vbNormalFocus)
+End Function
+
+Public Function deleteFile(fileName As String) As Integer
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    fso.deleteFile (fileName)
+End Function
+
+
+Function int_writeTxtFile(txt As String, fileName As String) As Integer
+    int_writeTxtFilen = fileName
     Dim fso As Object
     Set fso = CreateObject("Scripting.FileSystemObject")
     Dim oFile As Object
@@ -227,9 +244,13 @@ Function int_writeTxtFileAndOpen(txt As String, fileName As String)
     oFile.Close
     Set fso = Nothing
     Set oFile = Nothing
-    retVal = Shell("notepad.exe " & fileName, vbNormalFocus)
+    Exit Function
     
+errHndl:
+    Debug.Print err.Description
+    int_writeTxtFilen = ""
 End Function
+
 
 Public Function readTxtFile(fileName As String)
     Dim fso As Object

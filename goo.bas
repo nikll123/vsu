@@ -53,7 +53,7 @@ Sub int_getGoogleSheetsData(date1 As Date)
     On Error GoTo errHandle
     httpReq.Open "GET", url, False
     httpReq.send
-    Do Until httpReq.readyState = 4: Loop
+    'Do Until httpReq.readyState = 4: Loop
     res = httpReq.responseText
     On Error GoTo 0
     

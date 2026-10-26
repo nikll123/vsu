@@ -1,19 +1,33 @@
 Attribute VB_Name = "Dev"
-Public Const constRepoDir As String = "R:\Media\macro\NN\"
+Public Const constRepoDir As String = "C:\repos\NN\"
 
 
 'Sub importMacro()
 '    for
 'End Sub
-
 Sub exportMacroAll()
-For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
-    If m.Type = 1 Then ' vbext_ct_StdModule
-        m.Export (getFileName(m.Name))
-        'Debug.Print m.Name
-    End If
-Next
-MsgBox "Done: " & constRepoDir
+    int_exportMacro ("")
+End Sub
+Sub exportMacroChanged()
+    Dim mlist As String
+    mlist = getChangedModules()
+    int_exportMacro "," & mlist
+    MsgBox "Done: " & constRepoDir & vbCr & mlist
+End Sub
+
+Sub int_exportMacro(macroList As String)
+    Dim fn As String
+    For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
+        If m.Type = 1 Then ' vbext_ct_StdModule
+            doExprot = True
+            If macroList = "" Or InStr(1, macroList, "," & m.Name & ",") > 0 Then
+                fn = getFileName(m.Name)
+                deleteFile fn
+                m.Export (fn)
+            'Debug.Print m.Name
+            End If
+        End If
+    Next
 End Sub
 
 Sub removeMacroAll()
@@ -31,8 +45,8 @@ Function getFileName(moduleName As String)
 End Function
 
 
-Sub compareMacroAll()
-    res = ""
+Function getChangedModules() As String
+    getChangedModules = ""
     For Each m In Workbooks("PERSONAL.xlsb").VBProject.VBComponents
         If m.Type = 1 Then ' vbext_ct_StdModule
             'Debug.Print m.Name
@@ -45,18 +59,12 @@ Sub compareMacroAll()
             md5File = StringToMD5Hex(textFile)
                 
             If Not md5Excel = md5File Then
-                res = res & vbCr & m.Name
+                getChangedModules = getChangedModules & m.Name & ","
             End If
             
         End If
     Next
     
-    If Len(res) > 0 Then
-        res = "Changed modules: " & res
-    Else
-        res = "No changes"
-    End If
-    
-    Debug.Print res
+    Debug.Print getChangedModules
 
-End Sub
+End Function
