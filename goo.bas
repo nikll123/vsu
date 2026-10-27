@@ -50,12 +50,14 @@ Sub int_getGoogleSheetsData(date1 As Date)
     url = url & "?" & "date1=" & date1
            
     
-    On Error GoTo errHandle
+'    On Error GoTo errHandle
     httpReq.Open "GET", url, False
     httpReq.send
     'Do Until httpReq.readyState = 4: Loop
+    Dim res As String
     res = httpReq.responseText
-    On Error GoTo 0
+    qq = writeTxtFileAndOpen(res, getTmpFileName())
+'    On Error GoTo 0
     
     MsgBox res
     Exit Sub

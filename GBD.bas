@@ -213,11 +213,17 @@ End Function
 Function writeTxtPids(txt As String, repDate As Date)
    Set fso = CreateObject("Scripting.FileSystemObject")
    Dim strPath As String
-   strPath = fso.GetSpecialFolder(2) & "\" & repDate & "_" & fso.GetTempName()
+   strPath = getTmpFileName(repDate & "_")
    writeTxtPids = writeTxtFileAndOpen(txt, strPath)
 End Function
 
-Function writeTxtFileAndOpen(txt As String, fileName As String)
+Public Function getTmpFileName(Optional prefix As String) As String
+   Set fso = CreateObject("Scripting.FileSystemObject")
+   Dim strPath As String
+   getTmpFileName = fso.GetSpecialFolder(2) & "\" & prefix & fso.GetTempName()
+End Function
+
+Public Function writeTxtFileAndOpen(txt As String, fileName As String)
     fn = int_writeTxtFile(txt, fileName)
     If fn <> "" Then
         retVal = openTxtFile(fileName)
@@ -236,14 +242,20 @@ End Function
 
 Function int_writeTxtFile(txt As String, fileName As String) As Integer
     int_writeTxtFilen = fileName
-    Dim fso As Object
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Dim oFile As Object
-    Set oFile = fso.CreateTextFile(fileName)
-    oFile.WriteLine txt
-    oFile.Close
-    Set fso = Nothing
-    Set oFile = Nothing
+'    Dim fso As Object
+'    Set fso = CreateObject("Scripting.FileSystemObject")
+'    Dim oFile As Object
+'    Set oFile = fso.CreateTextFile(fileName)
+'    oFile.WriteLine Mid(txt, 914000)
+'    oFile.Close
+'    Set fso = Nothing
+'    Set oFile = Nothing
+    
+    On Error GoTo errHndl
+    Open fileName For Output As #1
+    Write #1, txt
+    Close #1
+    
     Exit Function
     
 errHndl:

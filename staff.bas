@@ -675,7 +675,7 @@ Sub activateCellOnSelectedSheets()
     For Each ss In ActiveWindow.SelectedSheets
         If ss.Index <> ActiveSheet.Index Then
             'ss.Activate
-            Application.GoTo ss.Cells(r, c)
+            Application.Goto ss.Cells(r, c)
             ActiveWindow.ScrollColumn = sc
             ActiveWindow.ScrollRow = sr
         End If
